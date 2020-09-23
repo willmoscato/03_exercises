@@ -1,5 +1,3 @@
-# 03_exercises
-
 ---
 title: 'Weekly Exercises #3'
 author: "Will Moscato"
@@ -349,8 +347,14 @@ station_date_frequency %>%
   left_join(Trips, by = "sdate") %>% 
   mutate(dayofweek = wday(date, label = TRUE)) %>% 
   group_by(dayofweek, client) %>% 
-  summarise(total = n())
+  summarise(total = n()) %>% 
+  mutate(total_prop = total/sum(total)) %>% 
+  pivot_wider(id_cols = dayofweek,
+              names_from = client,
+              values_from = total_prop)
 ```
+
+Casual riders don't tend to ride on weekdays and overall registered riders take up a larger proportion. 
 
 **DID YOU REMEMBER TO GO BACK AND CHANGE THIS SET OF EXERCISES TO THE LARGER DATASET? IF NOT, DO THAT NOW.**
 
@@ -358,6 +362,7 @@ station_date_frequency %>%
 
   20. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 03_exercises.Rmd, provide a link to the 03_exercises.md file, which is the one that will be most readable on GitHub.
 
+![](C:\Data Science 2020\03_exercises)
 ## Challenge problem! 
 
 This problem uses the data from the Tidy Tuesday competition this week, `kids`. If you need to refresh your memory on the data, read about it [here](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-15/readme.md). 
@@ -370,9 +375,14 @@ This problem uses the data from the Tidy Tuesday competition this week, `kids`. 
 ```{r}
 kids %>%
   filter(variable == "lib") %>% 
-  ggplot() +
-  geom_line(aes(x = year, y = inf_adj_perchild)) +
-  facet_geo(~state)
+  ggplot(aes(x = year, y = inf_adj_perchild)) +
+  geom_line(color = "white", size = 0.5) +
+  theme(legend.position = "dodge") +
+  theme_void() + 
+  theme(plot.background = element_rect(fill = "lightsteelblue4")) +
+  facet_geo(~state, grid = "us_state_grid3", label = "name") +
+  labs(title = "Change in public spending on libraries", subtitle = "Dollars spent per child, adjusted for inflation") +
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
 ```
 
 
