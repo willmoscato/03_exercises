@@ -1,5 +1,5 @@
 ---
-title: 'Weekly Exercises #3'
+title: 'Weekly Exercises #3' 
 author: "Will Moscato"
 output: 
   html_document:
